@@ -17,13 +17,18 @@ const usersSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            trim: true,
-            required: true,
+            trim: true
         },
         role: {
             type: String,
             trim: true,
             required: true
+        },
+        refreshToken: {
+            type: String,
+        },
+        googleId: {
+            type: String
         },
         is_active: {
             type: Boolean,

@@ -140,7 +140,6 @@ const login = async (req, res) => {
     }
 }
 
-
 const generateNewTokens = async (req, res) => {
     try {
         console.log(req.cookies.refreshToken);
@@ -200,8 +199,44 @@ const generateNewTokens = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    try {
+        console.log(req.body._id);
+
+        const user = await Users.findByIdAndUpdate(
+            req.body._id, 
+            {
+                $unset: {
+                    refreshToken: 1
+                }
+            },
+            {
+                new: true
+            }
+        );
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'User not logout.'
+            }); 
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'User logged out.'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error' + error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
-    generateNewTokens
+    generateNewTokens,
+    logout
 }
