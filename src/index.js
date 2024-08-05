@@ -6,7 +6,7 @@ const connectMySQLDB = require("./db/mysql");
 const cookieParser = require('cookie-parser');
 const googleProvider = require("./utils/PassportProvider");
 const passport = require("passport");
-const { connectChat } = require("./utils/scoketIO");
+const connectChat = require("./utils/socketIO");
 
 const app = express();
 app.use(cookieParser())
