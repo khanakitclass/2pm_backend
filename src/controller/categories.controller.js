@@ -23,7 +23,7 @@ const listCategories = async (req, res) => {
             })
         }
 
-        let startIndex=0, endIndex=0, paginatedData=[];
+        let startIndex=0, endIndex=0, paginatedData=categories;
 
         if (page > 0 && pageSize > 0) {             //page=2 pageSize=3
             startIndex = (page-1)*pageSize;         //startIndex=(2-1)*3=3
@@ -133,7 +133,7 @@ const deleteCategory = async (req, res) => {
 }
 
 const updateCategory = async (req, res) => {
-    // console.log("sdcsdc", req.params.category_id, req.body);
+    console.log("sdcsdc", req.params.category_id, req.body);
 
     try {
         const category = await Categories.findByIdAndUpdate(req.params.category_id, req.body, {new: true, runValidators: true});    

@@ -1,11 +1,13 @@
 const express = require("express");
 const { usersController } = require("../../../controller");
 const passport = require("passport");
+const upload = require("../../../middleware/upload");
 
 const router = express.Router();
 
 router.post(
     "/register",
+    upload.single('avatar'),
     usersController.register
 );
 
@@ -19,7 +21,7 @@ router.post(
     usersController.generateNewTokens
 );
 
-router.get('/googleLogin',
+router.post('/googleLogin',
     passport.authenticate('google', {
         scope:
             ['email', 'profile']

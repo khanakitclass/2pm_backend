@@ -17,7 +17,7 @@ router.get(
 //localhost:3000/api/v1/categories/list-categories
 router.get(
     "/list-categories",
-    // auth(["admin", "employees"]),
+    auth(["admin", "employees"]),
     categoryController.listCategories
 );
 

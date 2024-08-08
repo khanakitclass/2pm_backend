@@ -30,6 +30,12 @@ const usersSchema = new mongoose.Schema(
         is_active: {
             type: Boolean,
             default: true
+        },
+        avatar: {
+            type: String,
+        },
+        refreshToken: {
+            type: String,
         }
     },
     {

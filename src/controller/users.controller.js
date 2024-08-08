@@ -37,7 +37,7 @@ const genAccRefToken = async (id) => {
 
 const register = async (req, res) => {
     try {
-        console.log(req.body);
+        console.log("reggggggggggggg",req.body, req.file);
 
         const {email, password} = req.body;
 
@@ -63,7 +63,7 @@ const register = async (req, res) => {
             });
         }
 
-        const userData = await Users.create({...req.body, password: hashPassword});
+        const userData = await Users.create({...req.body, password: hashPassword, avatar: req.file.path});
 
         if (!userData) {
             return res.status(500).json({
