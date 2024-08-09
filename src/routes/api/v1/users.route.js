@@ -15,6 +15,11 @@ router.post(
 );
 
 router.post(
+    "/logout",
+    usersController.logout
+);
+
+router.post(
     "/generateNewTokens",
     usersController.generateNewTokens
 );

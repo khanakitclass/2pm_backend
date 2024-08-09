@@ -140,6 +140,34 @@ const login = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    console.log("logoutttttttttt", req.body);
+    await Users.findByIdAndUpdate(
+        req.body._id,
+        {
+            $unset: {
+                refreshToken: 1 // this removes the field from document
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json({
+            success: true,
+            message: "User logged Out"
+        })
+}
 
 const generateNewTokens = async (req, res) => {
     
@@ -220,5 +248,6 @@ const generateNewTokens = async (req, res) => {
 module.exports = {
     register,
     login,
-    generateNewTokens
+    generateNewTokens,
+    logout
 }
