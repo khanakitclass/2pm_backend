@@ -13,8 +13,8 @@ const genAccRefToken = async (id) => {
                 role: user.role,
                 expiresIn: '1 hours'
             },
-            "wfwfweiuhoqwih745cwruyvqieud",
-            { expiresIn: 60 * 60 }
+            process.env.ACCESS_TOKEN_SECERET,
+            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
         );
 
         const refreshToken = await jwt.sign(
