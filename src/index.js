@@ -12,7 +12,12 @@ const connectChat = require("./utils/socketIO");
 
 const app = express();
 app.use(cookieParser())
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
