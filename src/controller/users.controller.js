@@ -142,142 +142,79 @@ const login = async (req, res) => {
 
 
 const generateNewTokens = async (req, res) => {
-    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
-
-    console.log("1",incomingRefreshToken);
-
-    if (!incomingRefreshToken) {
-        return res.status(401).json({
-            success: false,
-            message: "unauthorized request"
-        })
-    }
-
+    
     try {
-        const decodedToken = await jwt.verify(
-            incomingRefreshToken,
-            "iuedhbdkjhewiuhdw54sfvequyg87"
-        );
+        console.log("generateNewTokensgenerateNewTokens",req.cookies.refreshToken);
 
-        console.log("1.5", decodedToken);
+        try {
+            if (!req.cookies.refreshToken) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Refresh token not found."
+                })
+            }
+            
+            const validateToken = await jwt.verify(req.cookies.refreshToken, "iuedhbdkjhewiuhdw54sfvequyg87");
 
-        if (!decodedToken) {
-            return res.status(401).json({
-                success: false,
-                message: "Token Expire"
-            })
+            console.log("validateTokenvalidateToken", validateToken)
+            if (!validateToken) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid token"
+                });
+            }
+
+            console.log(validateToken);
+
+            const user = await Users.findById(validateToken._id);
+
+            console.log(user);
+
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+
+            console.log(req.cookies.refreshToken, user.toObject().refreshToken);
+
+            if (req.cookies.refreshToken != user.toObject().refreshToken) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid token"
+                });
+            }
+
+            const { accessToken, refreshToken } = await genAccRefToken(user._id);
+
+            const options = {
+                httpOnly: true,
+                secure: true
+            }
+
+            res.status(200)
+                .cookie("accessToken", accessToken, options)
+                .cookie("refreshToken", refreshToken, options)
+                .json({
+                    success: true,
+                    message: "Login successfully.",
+                    data: { accessToken }
+                })
+        } catch (error) {
+            console.log("eeeeccc", error);
+
         }
 
-        
 
-        const user = await Users.findById(decodedToken?._id);
 
-        console.log("2",user);
 
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid refresh token"
-            })
-        }
-
-        if (incomingRefreshToken !== user?.refreshToken) {
-            return res.status(401).json({
-                success: false,
-                message: "Refresh token is expired or used"
-            })
-        }
-
-        const options = {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        }
-
-        const { accessToken, refreshToken } = await genAccRefToken(user._id);
-
-        console.log("3",accessToken, refreshToken);
-
-        return res
-            .status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", refreshToken, options)
-            .json({
-                accessToken,
-                refreshToken: refreshToken,
-                message: "Access token refreshed"
-            })
     } catch (error) {
-        return res.status(401).json({
+        return res.status(500).json({
             success: false,
-            message: error?.message || "Invalid refresh token"
-        })
+            message: 'Internal server error' + error.message
+        });
     }
-    // try {
-    //     console.log("generateNewTokensgenerateNewTokens",req.cookies.refreshToken);
-
-    //     try {
-    //         const validateToken = await jwt.verify(req.cookies.refreshToken, "iuedhbdkjhewiuhdw54sfvequyg87");
-
-    //         console.log("validateTokenvalidateToken", validateToken)
-    //         if (!validateToken) {
-    //             return res.status(400).json({
-    //                 success: false,
-    //                 message: "Invalid token"
-    //             });
-    //         }
-
-    //         console.log(validateToken);
-
-    //         const user = await Users.findById(validateToken._id);
-
-    //         console.log(user);
-
-    //         if (!user) {
-    //             return res.status(404).json({
-    //                 success: false,
-    //                 message: "User not found"
-    //             });
-    //         }
-
-    //         console.log(req.cookies.refreshToken, user.toObject().refreshToken);
-
-    //         if (req.cookies.refreshToken != user.toObject().refreshToken) {
-    //             return res.status(400).json({
-    //                 success: false,
-    //                 message: "Invalid token"
-    //             });
-    //         }
-
-    //         const { accessToken, refreshToken } = await genAccRefToken(user._id);
-
-    //         const options = {
-    //             httpOnly: true,
-    //             secure: true
-    //         }
-
-    //         res.status(200)
-    //             .cookie("accessToken", accessToken, options)
-    //             .cookie("refreshToken", refreshToken, options)
-    //             .json({
-    //                 success: true,
-    //                 message: "Login successfully.",
-    //                 data: { accessToken }
-    //             })
-    //     } catch (error) {
-    //         console.log("eeeeccc", error);
-
-    //     }
-
-
-
-
-    // } catch (error) {
-    //     return res.status(500).json({
-    //         success: false,
-    //         message: 'Internal server error' + error.message
-    //     });
-    // }
 }
 
 module.exports = {
