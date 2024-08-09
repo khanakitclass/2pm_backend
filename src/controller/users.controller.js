@@ -140,6 +140,43 @@ const login = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    console.log("logoutttttttttt", req.body._id);
+    
+    try {
+        const u = await Users.findByIdAndUpdate(
+            req.body._id,
+            {
+                $unset: {
+                    refreshToken: 1 // this removes the field from document
+                }
+            },
+            {
+                new: true
+            }
+        );
+
+        console.log(u);
+        
+    } catch (error) {
+        console.log("errr logouttt", error);
+        
+    }
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json({
+            success: true,
+            message: "User logged Out"
+        })
+}
 
 const generateNewTokens = async (req, res) => {
     try {
@@ -203,5 +240,6 @@ const generateNewTokens = async (req, res) => {
 module.exports = {
     register,
     login,
+    logout,
     generateNewTokens
 }

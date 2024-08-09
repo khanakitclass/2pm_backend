@@ -27,6 +27,9 @@ const usersSchema = new mongoose.Schema(
         googleId: {
             type: String,
         },
+        refreshToken: {
+            type: String,
+        },
         is_active: {
             type: Boolean,
             default: true

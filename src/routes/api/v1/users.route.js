@@ -10,6 +10,11 @@ router.post(
 );
 
 router.post(
+    "/logout",
+    usersController.logout
+);
+
+router.post(
     "/login",
     usersController.login
 );
