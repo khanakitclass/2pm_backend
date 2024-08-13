@@ -21,11 +21,6 @@ router.post(
     usersController.login
 );
 
-router.get(
-    "/checkAuth",
-    usersController.checkAuth
-);
-
 router.post(
     "/generateNewTokens",
     usersController.generateNewTokens

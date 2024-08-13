@@ -228,8 +228,7 @@ const generateNewTokens = async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true,
-            maxAge: 1000*1000
+            secure: true
         }
 
         res.status(200)
@@ -249,47 +248,9 @@ const generateNewTokens = async (req, res) => {
     }
 }
 
-const checkAuth = async (req, res) => {
-    try {
-        const token = req.cookies.accessToken; // Get token from cookies
-
-        console.log(token);
-        
-
-        if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: 'No access token provided'
-            });
-        }
-
-        // Verify the token
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECERET, (err, decoded) => {
-            if (err) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'Invalid or expired token'
-                });
-            }
-
-            // Token is valid
-            res.status(200).json({
-                success: true,
-                data: decoded // Send user info if needed
-            });
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error: ' + error.message
-        });
-    }
-}
-
 module.exports = {
     register,
     login,
     logout,
-    generateNewTokens,
-    checkAuth
+    generateNewTokens
 }
