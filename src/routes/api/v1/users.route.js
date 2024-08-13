@@ -1,11 +1,13 @@
 const express = require("express");
 const { usersController } = require("../../../controller");
 const passport = require("passport");
+const upload = require("../../../middleware/upload");
 
 const router = express.Router();
 
 router.post(
     "/register",
+    // upload.single("avtar"),
     usersController.register
 );
 
@@ -17,6 +19,11 @@ router.post(
 router.post(
     "/login",
     usersController.login
+);
+
+router.get(
+    "/checkAuth",
+    usersController.checkAuth
 );
 
 router.post(

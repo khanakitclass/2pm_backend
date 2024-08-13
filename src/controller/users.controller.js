@@ -14,7 +14,7 @@ const genAccRefToken = async (id) => {
                 expiresIn: '1 hours'
             },
             process.env.ACCESS_TOKEN_SECERET,
-            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+            { expiresIn: 3600 }
         );
 
         const refreshToken = await jwt.sign(
@@ -22,14 +22,14 @@ const genAccRefToken = async (id) => {
                 _id: id
             },
             "iuedhbdkjhewiuhdw54sfvequyg87",
-            { expiresIn: '2 days' }
+            { expiresIn: 360000 }
         );
 
         user.refreshToken = refreshToken;
 
-        await user.save({validateBeforeSave: false});
+        await user.save({ validateBeforeSave: false });
 
-        return {accessToken, refreshToken}
+        return { accessToken, refreshToken }
     } catch (error) {
         console.log(error);
     }
@@ -39,10 +39,13 @@ const register = async (req, res) => {
     try {
         console.log(req.body);
 
-        const {email, password} = req.body;
+        // console.log(req.file);
+
+
+        const { email, password } = req.body;
 
         const user = await Users.findOne({
-            $or: [{email}]
+            $or: [{ email }]
         });
 
         console.log(user);
@@ -63,7 +66,7 @@ const register = async (req, res) => {
             });
         }
 
-        const userData = await Users.create({...req.body, password: hashPassword});
+        const userData = await Users.create({ ...req.body, password: hashPassword });
 
         if (!userData) {
             return res.status(500).json({
@@ -93,7 +96,7 @@ const login = async (req, res) => {
         const { email, password } = req.body;
 
         const user = await Users.findOne({
-            $or: [{email}]
+            $or: [{ email }]
         });
 
 
@@ -113,13 +116,14 @@ const login = async (req, res) => {
             });
         }
 
-        const {accessToken, refreshToken} = await genAccRefToken(user._id);
+        const { accessToken, refreshToken } = await genAccRefToken(user._id);
 
         const userDataF = await Users.findById(user._id).select("-password -refreshToken");
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            maxAge: 1000 * 1000
         }
 
         res.status(200)
@@ -128,10 +132,10 @@ const login = async (req, res) => {
             .json({
                 success: true,
                 message: "Login successfully.",
-                data: {...userDataF.toObject(), accessToken}
+                data: { ...userDataF.toObject(), accessToken }
             })
 
-        
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -141,8 +145,8 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-    console.log("logoutttttttttt", req.body._id);
-    
+    console.log("logoutttttttttt", req.body);
+
     try {
         const u = await Users.findByIdAndUpdate(
             req.body._id,
@@ -157,10 +161,10 @@ const logout = async (req, res) => {
         );
 
         console.log(u);
-        
+
     } catch (error) {
         console.log("errr logouttt", error);
-        
+
     }
 
     const options = {
@@ -180,7 +184,14 @@ const logout = async (req, res) => {
 
 const generateNewTokens = async (req, res) => {
     try {
-        console.log(req.cookies.refreshToken);
+        console.log("1 generateNewTokens", req.cookies.refreshToken);
+
+        if (!req.cookies.refreshToken) {
+            return res.status(400).json({
+                success: false,
+                message: "Refresh token not found"
+            })
+        }
 
         const validateToken = await jwt.verify(req.cookies.refreshToken, "iuedhbdkjhewiuhdw54sfvequyg87");
 
@@ -191,11 +202,11 @@ const generateNewTokens = async (req, res) => {
             });
         }
 
-        console.log(validateToken);
+        console.log("222222",validateToken);
 
         const user = await Users.findById(validateToken._id);
 
-        console.log(user);
+        console.log("33333333",user);
 
         if (!user) {
             return res.status(404).json({
@@ -204,7 +215,7 @@ const generateNewTokens = async (req, res) => {
             });
         }
 
-        console.log(req.cookies.refreshToken , user.toObject().refreshToken);
+        console.log("4444444444",req.cookies.refreshToken, user.toObject().refreshToken);
 
         if (req.cookies.refreshToken != user.toObject().refreshToken) {
             return res.status(400).json({
@@ -217,7 +228,8 @@ const generateNewTokens = async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            maxAge: 1000*1000
         }
 
         res.status(200)
@@ -226,7 +238,7 @@ const generateNewTokens = async (req, res) => {
             .json({
                 success: true,
                 message: "Login successfully.",
-                data: {accessToken}
+                data: { accessToken }
             })
 
     } catch (error) {
@@ -237,9 +249,47 @@ const generateNewTokens = async (req, res) => {
     }
 }
 
+const checkAuth = async (req, res) => {
+    try {
+        const token = req.cookies.accessToken; // Get token from cookies
+
+        console.log(token);
+        
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'No access token provided'
+            });
+        }
+
+        // Verify the token
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECERET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid or expired token'
+                });
+            }
+
+            // Token is valid
+            res.status(200).json({
+                success: true,
+                data: decoded // Send user info if needed
+            });
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error: ' + error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
     logout,
-    generateNewTokens
+    generateNewTokens,
+    checkAuth
 }

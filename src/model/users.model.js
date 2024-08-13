@@ -30,6 +30,9 @@ const usersSchema = new mongoose.Schema(
         refreshToken: {
             type: String,
         },
+        avtar: {
+            type: String,
+        },
         is_active: {
             type: Boolean,
             default: true

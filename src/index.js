@@ -9,13 +9,23 @@ const cookieParser = require('cookie-parser');
 const googleProvider = require("./utils/PassportProvider");
 const passport = require("passport");
 const connectChat = require("./utils/socketIO");
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+
 
 const app = express();
+const swaggerDocument = YAML.load('./src/api.yaml');
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
 app.use(cookieParser())
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }));
+
 app.use(express.json());
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());

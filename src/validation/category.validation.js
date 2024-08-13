@@ -21,7 +21,7 @@ const updateCategory = {
         cat_img: Joi.string().allow('')
     }),
     params: Joi.object().keys({
-        category_id: Joi.string().required().max(2)
+        category_id: Joi.string().required()
     })
 }
 
