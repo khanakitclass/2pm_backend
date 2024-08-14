@@ -1,6 +1,6 @@
 const Users = require("../model/users.model");
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const genAccRefToken = async (id) => {
     try {
@@ -22,7 +22,7 @@ const genAccRefToken = async (id) => {
                 _id: id
             },
             "iuedhbdkjhewiuhdw54sfvequyg87",
-            { expiresIn: 360000 }
+            { expiresIn: '10 days' }
         );
 
         user.refreshToken = refreshToken;
@@ -120,15 +120,21 @@ const login = async (req, res) => {
 
         const userDataF = await Users.findById(user._id).select("-password -refreshToken");
 
-        const options = {
+        const optionsAcc = {
             httpOnly: true,
             secure: true,
-            maxAge: 1000 * 1000
+            maxAge: 60 * 60 * 1000
+        }
+
+        const optionsRef = {
+            httpOnly: true,
+            secure: true,
+            maxAge: 60 * 60 * 24 * 10 * 1000
         }
 
         res.status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", refreshToken, options)
+            .cookie("accessToken", accessToken, optionsAcc)
+            .cookie("refreshToken", refreshToken, optionsRef)
             .json({
                 success: true,
                 message: "Login successfully.",
@@ -195,18 +201,20 @@ const generateNewTokens = async (req, res) => {
 
         const validateToken = await jwt.verify(req.cookies.refreshToken, "iuedhbdkjhewiuhdw54sfvequyg87");
 
+        console.log("1.5", validateToken);
+
         if (!validateToken) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid token"
+                message: "Invalid token.."
             });
         }
 
-        console.log("222222",validateToken);
+        console.log("222222", validateToken);
 
         const user = await Users.findById(validateToken._id);
 
-        console.log("33333333",user);
+        console.log("33333333", user);
 
         if (!user) {
             return res.status(404).json({
@@ -215,12 +223,12 @@ const generateNewTokens = async (req, res) => {
             });
         }
 
-        console.log("4444444444",req.cookies.refreshToken, user.toObject().refreshToken);
+        console.log("4444444444", req.cookies.refreshToken, user.toObject().refreshToken);
 
         if (req.cookies.refreshToken != user.toObject().refreshToken) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid token"
+                message: "Invalid token ff"
             });
         }
 
@@ -248,9 +256,48 @@ const generateNewTokens = async (req, res) => {
     }
 }
 
+const checkAuth = async (req, res) => {
+    try {
+        const accessToken = req.cookies.accessToken;
+
+        console.log("checkAuthcheckAuthcheckAuth", accessToken);
+
+        if (!accessToken) {
+            return res.status(401).json({
+                success: false,
+                message: "Token not found."
+            });
+        }
+
+        const validateUser = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECERET);
+
+        console.log(validateUser);
+        
+        if (!validateUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Token expired or invalid."
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: validateUser,
+            message: "User authenticated."
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error' + error.message
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
     logout,
-    generateNewTokens
+    generateNewTokens,
+    checkAuth
 }

@@ -26,6 +26,11 @@ router.post(
     usersController.generateNewTokens
 );
 
+router.get(
+    "/checkAuth",
+    usersController.checkAuth
+);
+
 router.get('/googleLogin',
     passport.authenticate('google', {
         scope:
