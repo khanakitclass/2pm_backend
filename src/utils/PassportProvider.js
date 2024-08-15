@@ -33,15 +33,17 @@ const googleProvider = () => {
 
     passport.serializeUser(function (user, done) {
         console.log("Serialized User:", user.id);
-        done(null, user.id);
+        done(null, user);
     });
 
-    passport.deserializeUser(async function (id, done) {
-        console.log("Deserializing user with ID:", id);
+    passport.deserializeUser(async function (user, done) {
+        console.log("Deserializing user with ID:", user);
 
-        await Users.findById(id, function (err, user) {
-            done(err, user);
-        });
+        done(null, user);
+
+        // await Users.findById(id, function (err, user) {
+        //     done(err, user);
+        // });
     });
 }
 
