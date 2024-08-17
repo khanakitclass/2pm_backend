@@ -123,12 +123,14 @@ const login = async (req, res) => {
         const optionsAcc = {
             httpOnly: true,
             secure: true,
+            sameSite: 'None',
             maxAge: 60 * 60 * 1000
         }
 
         const optionsRef = {
             httpOnly: true,
             secure: true,
+            sameSite: 'None',
             maxAge: 60 * 60 * 24 * 10 * 1000
         }
 
@@ -175,7 +177,8 @@ const logout = async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'None'
     }
 
     return res
@@ -236,7 +239,8 @@ const generateNewTokens = async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            sameSite: 'None'
         }
 
         res.status(200)
