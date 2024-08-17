@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 connectDB();
-googleProvider();
+// googleProvider();
 // connectChat();
 
 // connectMySQLDB();
