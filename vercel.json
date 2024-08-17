@@ -12,10 +12,6 @@
             "dest": "/public/$1"
         },
         {
-            "src": "/api.yaml",
-            "dest": "/src/api.yaml"
-        },
-        {
             "src": "/(.*)", 
             "dest": "/src/index.js"
         }
