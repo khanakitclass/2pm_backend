@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
 });
 
 app.use("/api/v1", routes);
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 //localhost:8000
 app.listen(8000, () => {
