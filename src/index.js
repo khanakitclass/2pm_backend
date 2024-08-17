@@ -78,7 +78,7 @@ const express = require("express");
 const cors = require('cors');
 const routes = require("./routes/api/v1/index");
 const connectDB = require("./db/mongodb");
-// const googleProvider = require("./utils/PassportProvider");
+const googleProvider = require("./utils/PassportProvider");
 
 // const connectMySQLDB = require("./db/mysql");
 const cookieParser = require('cookie-parser');
@@ -94,7 +94,7 @@ const app = express();
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 connectDB();
-
+googleProvider();
 
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
