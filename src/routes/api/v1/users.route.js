@@ -113,7 +113,7 @@ router.get('/google/callback',
             }
         } else {
             console.log("Not authenticated");
-            res.redirect('/login');
+            res.redirect('https://2pm-frontend.vercel.app/auth');
         }
     }
 );
