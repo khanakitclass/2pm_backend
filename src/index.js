@@ -126,3 +126,5 @@ app.use("/api/v1", routes);
 app.listen(8000, () => {
     console.log("Server started at port 8000.");
 })
+
+//cors error solved by put googleProvider(); befors cors() apply
