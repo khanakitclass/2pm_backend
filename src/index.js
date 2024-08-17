@@ -13,17 +13,17 @@ const connectChat = require("./utils/socketIO");
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const path = require('path');
-
+const fs = require('fs');
 const app = express();
 
-// app.get('/api.yaml', (req, res) => {
-//     const filePath = path.join(__dirname, '../public/api.yaml');
-//     if (fs.existsSync(filePath)) {
-//         res.sendFile(filePath);
-//     } else {
-//         res.status(404).send('File not found');
-//     }
-// });
+app.get('/api.yaml', (req, res) => {
+    const filePath = path.join(__dirname, '../public/api.yaml');
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send('File not found');
+    }
+});
 
 // const swaggerDocumentPath = path.join(__dirname, '../public/api.yaml');
 // const swaggerDocument = YAML.load(swaggerDocumentPath);
