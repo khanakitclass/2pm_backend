@@ -2,8 +2,8 @@ require('dotenv').config()
 
 const express = require("express");
 const cors = require('cors');
-// const routes = require("./routes/api/v1/index");
-// const connectDB = require("./db/mongodb");
+const routes = require("./routes/api/v1/index");
+const connectDB = require("./db/mongodb");
 // const googleProvider = require("./utils/PassportProvider");
 
 // const connectMySQLDB = require("./db/mysql");
@@ -33,7 +33,7 @@ app.use(express.json());
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-// connectDB();
+connectDB();
 // googleProvider();
 // connectChat();
 
@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
     res.send('Hello, world!');
 });
 
-// app.use("/api/v1", routes);
+app.use("/api/v1", routes);
 // app.use((err, req, res, next) => {
 //     console.error(err.stack);
 //     res.status(500).send('Something broke!');
