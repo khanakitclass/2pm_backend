@@ -1,26 +1,27 @@
 require('dotenv').config()
 
 const express = require("express");
-const routes = require("./routes/api/v1/index");
-const connectDB = require("./db/mongodb");
-const googleProvider = require("./utils/PassportProvider");
 const cors = require('cors');
-const connectMySQLDB = require("./db/mysql");
-const cookieParser = require('cookie-parser');
-const passport = require("passport");
-const connectChat = require("./utils/socketIO");
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
+// const routes = require("./routes/api/v1/index");
+// const connectDB = require("./db/mongodb");
+// const googleProvider = require("./utils/PassportProvider");
+
+// const connectMySQLDB = require("./db/mysql");
+// const cookieParser = require('cookie-parser');
+// const passport = require("passport");
+// const connectChat = require("./utils/socketIO");
+// const swaggerUi = require('swagger-ui-express');
+// const YAML = require('yamljs');
 
 
 const app = express();
-const swaggerDocument = YAML.load('./src/api.yaml');
+// const swaggerDocument = YAML.load('./src/api.yaml');
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
     credentials: true,  
@@ -28,13 +29,13 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-connectDB();
-googleProvider();
-connectChat();
+// connectDB();
+// googleProvider();
+// connectChat();
 
 // connectMySQLDB();
 
@@ -43,11 +44,11 @@ app.get('/', (req, res) => {
     res.send('Hello, world!');
 });
 
-app.use("/api/v1", routes);
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+// app.use("/api/v1", routes);
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(500).send('Something broke!');
+// });
 
 //localhost:8000
 app.listen(8000, () => {
