@@ -3,10 +3,10 @@ require('dotenv').config()
 const express = require("express");
 const routes = require("./routes/api/v1/index");
 const connectDB = require("./db/mongodb");
+const googleProvider = require("./utils/PassportProvider");
 const cors = require('cors');
 const connectMySQLDB = require("./db/mysql");
 const cookieParser = require('cookie-parser');
-const googleProvider = require("./utils/PassportProvider");
 const passport = require("passport");
 const connectChat = require("./utils/socketIO");
 const swaggerUi = require('swagger-ui-express');
@@ -22,7 +22,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cookieParser())
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://2pm-frontend.vercel.app',
     credentials: true,
 }));
 
@@ -34,8 +34,6 @@ app.use(passport.session());
 connectDB();
 googleProvider();
 connectChat();
-
-googleLoginProvider();
 
 // connectMySQLDB();
 
