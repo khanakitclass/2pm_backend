@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8000/api/v1
     description: Local server
-  - url: http://example.com
+  - url: https://2pm-backend.vercel.app/api/v1
     description: Optional server description, e.g. Internal staging server for testing
 components:
   securitySchemes:

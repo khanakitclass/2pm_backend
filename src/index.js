@@ -87,21 +87,26 @@ const passport = require("passport");
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const path = require("path");
-    
+
 
 const app = express();
 const swaggerDocument = YAML.load(path.resolve('./public', 'api.yaml'));
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.get('/swagger', (req, res) => {
+    res.sendFile(path.resolve('./public', 'api.yaml'));
+});
+
 connectDB();
 googleProvider();
 
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
-    credentials: true,  
+    credentials: true,
     optionsSuccessStatus: 200
-})); 
+}));
 
 app.use(express.json());
 app.use(cookieParser())
