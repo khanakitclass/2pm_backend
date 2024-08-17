@@ -38,6 +38,10 @@ connectChat();
 // connectMySQLDB();
 
 //localhost:8000/api/v1
+app.get('/', (req, res) => {
+    res.send('Hello, world!');
+});
+
 app.use("/api/v1", routes);
 
 //localhost:8000
