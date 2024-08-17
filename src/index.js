@@ -78,12 +78,12 @@ const express = require("express");
 const cors = require('cors');
 const routes = require("./routes/api/v1/index");
 const connectDB = require("./db/mongodb");
-// const googleProvider = require("./utils/PassportProvider");
+const googleProvider = require("./utils/PassportProvider");
 
 // const connectMySQLDB = require("./db/mysql");
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const passport = require("passport");
-// const connectChat = require("./utils/socketIO");
+const connectChat = require("./utils/socketIO");
 // const swaggerUi = require('swagger-ui-express');
 // const YAML = require('yamljs');
 
@@ -103,14 +103,14 @@ app.use(cors({
 }));
 
 app.use(express.json());
-// app.use(cookieParser())
+app.use(cookieParser())
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 connectDB();
-// googleProvider();
-// connectChat();
+googleProvider();
+connectChat();
 
 // connectMySQLDB();
 
