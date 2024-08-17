@@ -39,43 +39,84 @@ router.get('/googleLogin',
     }
     ));
 
+// router.get('/google/callback',
+//     passport.authenticate('google', {
+//         failureRedirect: '/login'
+//     }),
+//     async function (req, res) {
+//         // Successful authentication, redirect home.
+//         console.log("qqqqqqqqqqqqqqqqqqqqqqq");
+//         console.log(req.isAuthenticated());
+//         console.log(req.session);
+//         console.log("ooooooooooo", req.user);
+//         console.log("req.session.passport.user._id",req.session.passport.user._id);
+
+
+//         if (req.isAuthenticated()) {
+//             const { accessToken, refreshToken } = await genAccRefToken(req.session.passport.user._id);
+
+//             console.log("new token", accessToken, refreshToken);
+            
+
+//             const optionsAcc = {
+//                 httpOnly: true,
+//                 secure: true,
+//                 maxAge: 60 * 60 * 1000
+//             }
+
+//             const optionsRef = {
+//                 httpOnly: true,
+//                 secure: true,
+//                 maxAge: 60 * 60 * 24 * 10 * 1000
+//             }
+
+//             res.status(200)
+//                 .cookie("accessToken", accessToken, optionsAcc)
+//                 .cookie("refreshToken", refreshToken, optionsRef)
+//                 .redirect("https://2pm-frontend.vercel.app/")
+//         }
+//     }
+// );
+
 router.get('/google/callback',
     passport.authenticate('google', {
         failureRedirect: '/login'
     }),
     async function (req, res) {
-        // Successful authentication, redirect home.
-        console.log("qqqqqqqqqqqqqqqqqqqqqqq");
-        console.log(req.isAuthenticated());
-        console.log(req.session);
-        console.log("ooooooooooo", req.user);
-        console.log("req.session.passport.user._id",req.session.passport.user._id);
-
-
+        console.log("Callback hit");
+        
         if (req.isAuthenticated()) {
-            const { accessToken, refreshToken } = await genAccRefToken(req.session.passport.user._id);
+            console.log("Authenticated", req.user);
 
-            console.log("new token", accessToken, refreshToken);
-            
+            try {
+                const { accessToken, refreshToken } = await genAccRefToken(req.session.passport.user._id);
 
-            const optionsAcc = {
-                httpOnly: true,
-                secure: true,
-                maxAge: 60 * 60 * 1000
+                const optionsAcc = {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 60 * 60 * 1000
+                };
+
+                const optionsRef = {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 60 * 60 * 24 * 10 * 1000
+                };
+
+                res.status(200)
+                    .cookie("accessToken", accessToken, optionsAcc)
+                    .cookie("refreshToken", refreshToken, optionsRef)
+                    .redirect("https://2pm-frontend.vercel.app/");
+            } catch (error) {
+                console.error('Error generating tokens:', error);
+                res.status(500).send('Internal Server Error');
             }
-
-            const optionsRef = {
-                httpOnly: true,
-                secure: true,
-                maxAge: 60 * 60 * 24 * 10 * 1000
-            }
-
-            res.status(200)
-                .cookie("accessToken", accessToken, optionsAcc)
-                .cookie("refreshToken", refreshToken, optionsRef)
-                .redirect("https://2pm-frontend.vercel.app/")
+        } else {
+            console.log("Not authenticated");
+            res.redirect('/login');
         }
     }
 );
+
 
 module.exports = router
