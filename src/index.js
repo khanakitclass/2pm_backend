@@ -12,10 +12,11 @@ const passport = require("passport");
 const connectChat = require("./utils/socketIO");
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-
+const path = require('path');
 
 const app = express();
-const swaggerDocument = YAML.load('./public/api.yaml');
+const swaggerDocumentPath = path.join(__dirname, '../public/api.yaml');
+const swaggerDocument = YAML.load(swaggerDocumentPath);
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
