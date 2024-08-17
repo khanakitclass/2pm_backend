@@ -83,7 +83,7 @@ const googleProvider = require("./utils/PassportProvider");
 // const connectMySQLDB = require("./db/mysql");
 const cookieParser = require('cookie-parser');
 const passport = require("passport");
-// const connectChat = require("./utils/socketIO");
+const connectChat = require("./utils/socketIO");
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const path = require("path");
@@ -93,17 +93,11 @@ const app = express();
 
 const _dirname = path.resolve();
 
-const __swaggerDistPath = path.join(_dirname, 'node_modules', 'swagger-ui-dist');
+const __swaggerDistPath = path.join(_dirname, 'node_modules', 'swagger-ui-dist'); //install swagger-ui-dist
 
 const swaggerDocument = YAML.load(path.resolve('./public', 'api.yaml'));
 
 
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
-// const swaggerDocument = YAML.load(path.resolve(__dirname, 'public', 'api.yaml'));
-
-// Serve Swagger UI static files
 app.use(
   '/api/docs',
   express.static(__swaggerDistPath, { index: false }), // Serve Swagger UI assets
@@ -130,9 +124,7 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-// googleProvider();
-// connectChat();
+connectChat();
 
 // connectMySQLDB();
 
