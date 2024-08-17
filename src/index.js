@@ -15,10 +15,10 @@ const YAML = require('yamljs');
 
 
 const app = express();
-const swaggerDocument = YAML.load('./src/api.yaml');
+// const swaggerDocument = YAML.load('./src/api.yaml');
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 
