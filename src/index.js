@@ -22,9 +22,17 @@ const app = express();
 
 
 
+// app.use(cors({
+//     origin: 'https://2pm-frontend.vercel.app',
+//     credentials: true,  
+//     optionsSuccessStatus: 200
+// }));
+
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
-    credentials: true,  
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 200
 }));
 
