@@ -4,8 +4,8 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const googleProvider = () => {
     passport.use(new GoogleStrategy({
-        clientID: "569940044172-2166umtsb8m4nbn30ojh8e2amee4o1t9.apps.googleusercontent.com",
-        clientSecret: "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",
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECREAT,
         callbackURL: "https://2pm-backend.vercel.app/api/v1/users/google/callback",
         passReqToCallback: true
     },
