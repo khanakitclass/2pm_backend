@@ -110,7 +110,7 @@ app.use(
 );
 
 connectDB();
-
+ 
 
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
