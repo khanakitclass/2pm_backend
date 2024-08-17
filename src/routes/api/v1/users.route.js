@@ -73,7 +73,7 @@ router.get('/google/callback',
             res.status(200)
                 .cookie("accessToken", accessToken, optionsAcc)
                 .cookie("refreshToken", refreshToken, optionsRef)
-                .redirect("http://localhost:3000/")
+                .redirect("https://2pm-frontend.vercel.app/")
         }
     }
 );
