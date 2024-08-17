@@ -4,20 +4,21 @@ const express = require("express");
 const cors = require('cors');
 const routes = require("./routes/api/v1/index");
 const connectDB = require("./db/mongodb");
-const googleProvider = require("./utils/PassportProvider");
+// const googleProvider = require("./utils/PassportProvider");
 
-const cookieParser = require('cookie-parser');
+// const connectMySQLDB = require("./db/mysql");
+// const cookieParser = require('cookie-parser');
 const passport = require("passport");
-const connectChat = require("./utils/socketIO");
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
+// const connectChat = require("./utils/socketIO");
+// const swaggerUi = require('swagger-ui-express');
+// const YAML = require('yamljs');
 
 
 const app = express();
-const swaggerDocument = YAML.load('./src/api.yaml');
+// const swaggerDocument = YAML.load('./src/api.yaml');
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 
@@ -34,8 +35,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 connectDB();
-googleProvider();
-connectChat();
+// googleProvider();
+// connectChat();
+
+// connectMySQLDB();
 
 //localhost:8000/api/v1
 app.get('/', (req, res) => {
@@ -43,10 +46,10 @@ app.get('/', (req, res) => {
 });
 
 app.use("/api/v1", routes);
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(500).send('Something broke!');
+// });
 
 //localhost:8000
 app.listen(8000, () => {
