@@ -9,7 +9,7 @@ const googleProvider = require("./utils/PassportProvider");
 // const connectMySQLDB = require("./db/mysql");
 const cookieParser = require('cookie-parser');
 const passport = require("passport");
-// const connectChat = require("./utils/socketIO");
+const connectChat = require("./utils/socketIO");
 // const swaggerUi = require('swagger-ui-express');
 // const YAML = require('yamljs');
 
@@ -44,7 +44,7 @@ app.use(passport.session());
 
 connectDB();
 googleProvider();
-// connectChat();
+connectChat();
 
 // connectMySQLDB();
 
