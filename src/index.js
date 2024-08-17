@@ -25,11 +25,11 @@ app.get('/api.yaml', (req, res) => {
     }
 });
 
-const swaggerDocumentPath = path.join(__dirname, '../public/api.yaml');
-const swaggerDocument = YAML.load(swaggerDocumentPath);
+// const swaggerDocumentPath = path.join(__dirname, '../public/api.yaml');
+// const swaggerDocument = YAML.load(swaggerDocumentPath);
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 
