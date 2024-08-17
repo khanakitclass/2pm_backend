@@ -7,7 +7,7 @@ const connectDB = require("./db/mongodb");
 // const googleProvider = require("./utils/PassportProvider");
 
 // const connectMySQLDB = require("./db/mysql");
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const passport = require("passport");
 // const connectChat = require("./utils/socketIO");
 // const swaggerUi = require('swagger-ui-express');
@@ -29,7 +29,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-// app.use(cookieParser())
+app.use(cookieParser())
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
