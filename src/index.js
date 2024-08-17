@@ -90,14 +90,30 @@ const path = require("path");
 
 
 const app = express();
+
+const _dirname = path.resolve();
+
+const __swaggerDistPath = path.join(_dirname, 'node_modules', 'swagger-ui-dist');
+
 const swaggerDocument = YAML.load(path.resolve('./public', 'api.yaml'));
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/swagger', (req, res) => {
-    res.sendFile(path.resolve('./public', 'api.yaml'));
-});
+
+// const swaggerDocument = YAML.load(path.resolve(__dirname, 'public', 'api.yaml'));
+
+// Serve Swagger UI static files
+app.use(
+  '/api/docs',
+  express.static(__swaggerDistPath, { index: false }), // Serve Swagger UI assets
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    swaggerOptions: {
+      url: '/public/api.yaml' // Path to your YAML file
+    }
+  })
+);
 
 connectDB();
 googleProvider();
