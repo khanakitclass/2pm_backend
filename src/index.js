@@ -16,14 +16,14 @@ const path = require('path');
 
 const app = express();
 
-app.get('/api.yaml', (req, res) => {
-    const filePath = path.join(__dirname, '../public/api.yaml');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('File not found');
-    }
-});
+// app.get('/api.yaml', (req, res) => {
+//     const filePath = path.join(__dirname, '../public/api.yaml');
+//     if (fs.existsSync(filePath)) {
+//         res.sendFile(filePath);
+//     } else {
+//         res.status(404).send('File not found');
+//     }
+// });
 
 // const swaggerDocumentPath = path.join(__dirname, '../public/api.yaml');
 // const swaggerDocument = YAML.load(swaggerDocumentPath);
@@ -37,7 +37,7 @@ app.get('/api.yaml', (req, res) => {
 //     origin: 'https://2pm-frontend.vercel.app',
 //     credentials: true,  
 //     optionsSuccessStatus: 200
-// }));
+// })); 
 
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
