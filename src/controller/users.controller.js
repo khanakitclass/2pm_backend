@@ -258,7 +258,7 @@ const generateNewTokens = async (req, res) => {
 
 const checkAuth = async (req, res) => {
     try {
-        const accessToken = req.cookies.accessToken;
+        const accessToken = req.cookies.accessToken || req.header("Authorization")?.replace("Bearer ", "");
 
         console.log("checkAuthcheckAuthcheckAuth", accessToken);
 
