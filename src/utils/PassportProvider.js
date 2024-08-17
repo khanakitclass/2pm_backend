@@ -32,16 +32,25 @@ const googleProvider = () => {
     ));
 
     passport.serializeUser(function (user, done) {
-        console.log("Serialized User:", user.id);
-        done(null, user.id);
+        console.log("Serialized User:", user);
+        done(null, user);
     });
 
-    passport.deserializeUser(async function (id, done) {
-        console.log("Deserializing user with ID:", id);
+    passport.deserializeUser(async function (data, done) {
+        console.log("Deserializing user with ID:", data);
 
-        await Users.findById(id, function (err, user) {
-            done(err, user);
-        });
+        try {
+            done(null, data);
+        } catch (err) {
+            done(err, null);
+        }
+        
+
+        
+
+        // await Users.findById(id, function (err, user) {
+        //     done(err, user);
+        // });
     });
 }
 

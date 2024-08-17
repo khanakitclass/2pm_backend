@@ -11,7 +11,7 @@ const auth = (roles=[]) => async (req, res, next) => {
         console.log(token);
         
         if (!token) {
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: "Token not available"
             })

@@ -299,5 +299,6 @@ module.exports = {
     login,
     logout,
     generateNewTokens,
-    checkAuth
+    checkAuth,
+    genAccRefToken
 }
