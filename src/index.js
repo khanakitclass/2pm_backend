@@ -15,13 +15,13 @@ const connectDB = require("./db/mongodb");
 
 
 const app = express();
-// const swaggerDocument = YAML.load('./src/api.yaml');
+const swaggerDocument = YAML.load('./src/api.yaml');
 
 
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-// app.use(cookieParser())
+app.use(cookieParser())
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
     credentials: true,  
