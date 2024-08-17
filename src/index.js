@@ -23,7 +23,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(cookieParser())
 app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
-    credentials: true,
+    credentials: true,  
+    optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
