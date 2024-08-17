@@ -6,7 +6,7 @@ const googleProvider = () => {
     passport.use(new GoogleStrategy({
         clientID: "569940044172-2166umtsb8m4nbn30ojh8e2amee4o1t9.apps.googleusercontent.com",
         clientSecret: "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",
-        callbackURL: "http://localhost:8000/api/v1/users/google/callback",
+        callbackURL: "https://2pm-backend.vercel.app/api/v1/users/google/callback",
         passReqToCallback: true
     },
         async function (request, accessToken, refreshToken, profile, done) {
