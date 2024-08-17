@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require('cors');
 const routes = require("./routes/api/v1/index");
 const connectDB = require("./db/mongodb");
-// const googleProvider = require("./utils/PassportProvider");
+const googleProvider = require("./utils/PassportProvider");
 
 // const connectMySQLDB = require("./db/mysql");
 // const cookieParser = require('cookie-parser');
@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 connectDB();
-// googleProvider();
+googleProvider();
 // connectChat();
 
 // connectMySQLDB();
@@ -46,10 +46,7 @@ app.get('/', (req, res) => {
 });
 
 app.use("/api/v1", routes);
-// app.use((err, req, res, next) => {
-//     console.error(err.stack);
-//     res.status(500).send('Something broke!');
-// });
+
 
 //localhost:8000
 app.listen(8000, () => {
