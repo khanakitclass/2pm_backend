@@ -24,11 +24,14 @@ const usersSchema = new mongoose.Schema(
             trim: true,
             required: true
         },
+        googleId: {
+            type: String,
+        },
         refreshToken: {
             type: String,
         },
-        googleId: {
-            type: String
+        avtar: {
+            type: String,
         },
         is_active: {
             type: Boolean,

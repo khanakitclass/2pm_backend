@@ -2,21 +2,40 @@ const Categories = require("../model/categories.model");
 const { uploadFile } = require("../utils/cloudinary");
 
 const listCategories = async (req, res) => {
-    console.log("cateeee", req.user);
+    console.log("cateeee", req.query.page, req.query.pageSize);
     try {
+        let page = parseInt(req.query.page);
+        let pageSize = parseInt(req.query.pageSize);
+
+        if (page <= 0 || pageSize <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Page or page size must greater than zero."
+            })
+        }
+
         const categories = await Categories.find();
 
         if (!categories || categories.length === 0) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Categories not found"
             })
         }
 
+        let startIndex=0, endIndex=0, paginatedData=[];
+
+        if (page > 0 && pageSize > 0) {             //page=2 pageSize=3
+            startIndex = (page-1)*pageSize;         //startIndex=(2-1)*3=3
+            endIndex = startIndex + pageSize;       //endIndex = 3+3 = 6
+            paginatedData = categories.slice(startIndex, endIndex)
+        }
+
         res.status(200).json({
             success: true,
+            totalData: categories.length,
             message: "Categories fetched successfully.",
-            data: categories
+            data: paginatedData
         })
     } catch (error) {
         res.status(500).json({
@@ -53,6 +72,8 @@ const getCategory = async (req, res) => {
 }
 
 const addCategory = async (req, res) => {
+    console.log("ggcccccccc", req.body);
+    console.log("ffffffffffff",req.file);
     try {
         console.log(req.body);
         console.log(req.file);
