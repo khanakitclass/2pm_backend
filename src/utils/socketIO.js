@@ -3,7 +3,7 @@ const { Server } = require('socket.io');
 const connectChat = () => {
     const io = new Server({
         cors: {
-          origin: "http://localhost:3000"
+          origin: "https://2pm-frontend.vercel.app"
         }
       });
 
