@@ -100,7 +100,7 @@ app.use(cors({
     origin: 'https://2pm-frontend.vercel.app',
     credentials: true,  
     optionsSuccessStatus: 200
-}));
+})); 
 
 app.use(express.json());
 app.use(cookieParser())

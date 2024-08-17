@@ -8,7 +8,7 @@ const googleProvider = () => {
         clientSecret: process.env.GOOGLE_CLIENT_SECREAT,
         callbackURL: "https://2pm-backend.vercel.app/api/v1/users/google/callback",
         passReqToCallback: true
-    },
+    }, 
         async function (request, accessToken, refreshToken, profile, done) {
             let user = await Users.findOne({ googleId: profile.id });
 
