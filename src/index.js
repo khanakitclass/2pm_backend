@@ -96,7 +96,7 @@ const _dirname = path.resolve();
 const __swaggerDistPath = path.join(_dirname, 'node_modules', 'swagger-ui-dist'); //install swagger-ui-dist
 
 const swaggerDocument = YAML.load(path.resolve('./public', 'api.yaml'));
-
+  
 
 app.use(
   '/api/docs',
