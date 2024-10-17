@@ -156,6 +156,36 @@ paths:
                 type: array
                 items: 
                   type: string
+  /categories/add-category:
+    post:
+      summary: Add Category.
+      description: Optional extended description in CommonMark or HTML.
+      tags:
+        - categories
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                product_img:
+                  type: string
+                  format: binary
+                
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
   /categories/update-category/{category_id}:
     put:
       parameters:
@@ -172,7 +202,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -180,6 +210,32 @@ paths:
                   type: string
                 description:
                   type: string
+                product_img:
+                  type: string
+                  format: binary
+                
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+  /categories/delete-category/{category_id}:
+    delete:
+      parameters:
+        - in: path
+          name: category_id
+          schema:
+            type: string
+          required: true
+          description: Category id
+      summary: Delete Category.
+      description: Optional extended description in CommonMark or HTML.
+      tags:
+        - categories
       responses:
         '200':    # status code
           description: A JSON array of user names

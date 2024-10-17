@@ -133,13 +133,37 @@ const deleteCategory = async (req, res) => {
 }
 
 const updateCategory = async (req, res) => {
-    // console.log("sdcsdc", req.params.category_id, req.body);
+    console.log("sdcsdc", req.params.category_id, req.body, req.file);
 
     try {
-        const category = await Categories.findByIdAndUpdate(req.params.category_id, req.body, {new: true, runValidators: true});    
+        
+        let category = {};
+
+        if (req.file) {
+            const fileRes = await uploadFile(req.file.path, "Category");
+
+            category = await Categories.findByIdAndUpdate(
+                req.params.category_id, 
+                {
+                    ...req.body,
+                    cat_img: {
+                        public_id: fileRes.public_id,
+                        url: fileRes.url
+                    }
+                }, 
+                {new: true, runValidators: true}
+            );
+        } else {
+            category = await Categories.findByIdAndUpdate(
+                req.params.category_id, 
+                req.body, 
+                {new: true, runValidators: true}
+            );
+        }
+            
 
         if (!category) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Category not update."
             })

@@ -30,6 +30,7 @@ router.post(
 
 router.put(
     "/update-category/:category_id",
+    upload.single("product_img"),
     validation(categoryValidation.updateCategory),
     categoryController.updateCategory
 );
